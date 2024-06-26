@@ -1,17 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     //The variables
 
-    private int coins = 0;
+    // Variable for coins
+    public int coins = 0;
+
+    // Variable for health
     public int health = 10;
+
+    // Variable for max health
+    public int maxHealth = 10;
+
+    // Variable for audio source
     public AudioSource audioSource;
+
+    // Variable for coin collect sound
     public AudioClip collectSound;
 
+    // Variable for damage sound
+    public AudioClip damageSound;
+
+    // Variable for fireball prefab
     public GameObject fireballPrefab;
+
+    // Variable for attack point
     public Transform attackPoint;
 
     public void CollectCoin()
@@ -30,7 +48,24 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
+        //reduces health
+
         health -= damage;
+
+        
+        if(health > 0)
+        {
+            //plays the damage sound
+
+            audioSource.PlayOneShot(damageSound);
+        }
+        else
+        {
+            //Reloads the scene
+
+            int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
     public void Update()
     {
